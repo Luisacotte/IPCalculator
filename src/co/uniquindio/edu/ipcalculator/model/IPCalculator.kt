@@ -1,5 +1,5 @@
 package co.uniquindio.edu.ipcalculator.model
-
+import co.uniquindio.edu.ipcalculator.exceptions.MalformedIPAddress
 import co.uniquindio.edu.ipcalculator.util.Util
 import kotlin.math.pow
 
@@ -9,9 +9,39 @@ class IPCalculator(IPAddressComplete:String) {
     private var subnetMask:Int = 16
 
     init{
-        getSubnetMaskInDecimalFormat(IPAddressComplete)
-        var slashIndex = IPAddressComplete.indexOf('/')
-        IPAddress = IPAddressComplete.substring(0, slashIndex)
+        setIPAddressAndSubnetMask(IPAddressComplete)
+    }
+
+    /**
+     * This method allows to set the net address and the subnet mask only if they are well formed
+     * @throws MalformedIPAddress if: 1 the complete address is null or empty
+     *                                2 the complete address does not contains the / character
+     *                                3 some of the octects of the net address are major than 255
+     *                                4 the subnet mask is not on the range of [8, 255]
+     */
+    @Throws(MalformedIPAddress::class)
+    private fun setIPAddressAndSubnetMask(ipAddressComplete:String){
+        if(!ipAddressComplete.isNullOrEmpty()){
+            if(ipAddressComplete.contains("/")){
+                var slashIndex = ipAddressComplete.indexOf('/')
+                IPAddress = ipAddressComplete.substring(0, slashIndex)
+                val array = IPAddress.split(".")
+                if(array[0].toInt()<=255&&array[1].toInt()<=255
+                        &&array[2].toInt()<=255
+                        &&array[3].toInt()<=255) {
+                    var auxSubnetMask = ipAddressComplete.substring(slashIndex + 1, ipAddressComplete.length).toInt()
+                    if (auxSubnetMask >= 8 && auxSubnetMask <= 32) {
+                        subnetMask = auxSubnetMask
+                    } else {
+                        throw MalformedIPAddress("La máscara de subred debe estar en el rango de 8 a 32")
+                    }
+                }else{
+                    throw MalformedIPAddress("La dirección IP está mal formada")
+                }
+            }
+        }else{
+            throw MalformedIPAddress("Debes ingresar la IP")
+        }
     }
 
     /**
@@ -40,8 +70,7 @@ class IPCalculator(IPAddressComplete:String) {
         var fourthOctect2:String = subnetMaskString.substring(24, 32)
         var subnetMask:String = firstOctect2+secondOctect2+thirdOctect2+fourthOctect2
         var netIPAddress:String = ""
-        println(ipAddress.length)
-        println(subnetMask.length)
+
         var copyAux:String = ""
         for(i in 0..((8-firstOctect.length)-1)){
             copyAux += "0"
@@ -92,7 +121,6 @@ class IPCalculator(IPAddressComplete:String) {
      * This method allows to get the subnetMask
      */
     fun getSubnetMaskInDecimalFormat(addressComplete: String):Int{
-
         var slashIndex = addressComplete.indexOf('/')
         subnetMask = addressComplete.substring(slashIndex+1, addressComplete.length).toInt()
         return subnetMask

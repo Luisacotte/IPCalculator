@@ -7,7 +7,7 @@ import javafx.stage.Stage
 class Main: Application() {
 
     override fun start(primaryStage: Stage?) {
-        var ipCalculator:IPCalculator = IPCalculator("184.35.77.15/22")
+        var ipCalculator:IPCalculator = IPCalculator("192.35.77.15/22")
         println(ipCalculator.getNetIPAddress())
         println(ipCalculator.getSubnetMaskInDecimalFormat())
         println(ipCalculator.getBroadcastAddress())
