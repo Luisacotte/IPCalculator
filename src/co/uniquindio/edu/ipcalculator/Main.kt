@@ -28,7 +28,7 @@ class Main: Application() {
         println(ipCalculator.getBroadcastAddress())
         println(ipCalculator.getBitsNumberForTheNet())
         println(ipCalculator.getBitsNumberForTheHost())
-        println(ipCalculator.getBitsNumberOfAssignableIPs())
+        println(ipCalculator.getNumberOfAssignableIPs())
         println(ipCalculator.getRangeIPAddressComplete())
         println(ipCalculator.getRangeIPAddressAssignable())
         System.exit(0)

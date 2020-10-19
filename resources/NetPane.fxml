@@ -1,19 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="co.uniquindio.edu.ipcalculator.controller.NetPaneController"
-            prefHeight="700.0" prefWidth="600.0" alignment="CENTER">
+<VBox alignment="CENTER" prefHeight="700.0" prefWidth="600.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.ipcalculator.controller.NetPaneController">
     <children>
-        <HBox alignment="CENTER" prefWidth="600.0">
-
+        <HBox alignment="CENTER" prefHeight="103.0" prefWidth="600.0" spacing="10.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                   <!-- <div>Iconos diseñados por <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.es/" title="Flaticon">www.flaticon.es</a></div> -->
+                  <Image url="@images/net.png" />
+               </image>
+            </ImageView>
+         </children></HBox>
+        <Separator prefWidth="200.0" />
+        <HBox alignment="CENTER" prefHeight="103.0" prefWidth="600.0" spacing="10.0">
+            <Label text="Dirección IP Completa" />
+            <TextField fx:id="ipAddressCompleteField" promptText="0.0.0.0/8" style="-fx-background-radius: 30px;" />
+            <Button onAction="#analyzeIP" style="-fx-background-radius: 30px;" text="Analizar" />
         </HBox>
+        <Separator prefWidth="200.0" />
+      <GridPane prefHeight="292.0" prefWidth="600.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                 <Label text="Máscara de Subred (Decimal)" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                 <Label text="Dirección de broadcast" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                 <Label text="Bits para identificar la red" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                 <Label text="Bits para identificar los host" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                 <Label text="Cantidad de direcciones asignables" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+                 <Label text="Rango completo de direcciones" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6">
+                 <Label text="Rango de direcciones asignables" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                 <Label fx:id="subnetMaskLabel" text="255.255.255.255" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                 <Label fx:id="broadcastAddressLabel" text="255.255.255.255" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                 <Label fx:id="bitsNumberNetLabel" text="0" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                 <Label fx:id="bitsNumberHostLabel" text="0" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                 <Label fx:id="ipAddressAssignableNumber" text="0" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                 <Label fx:id="ipAddressRangeCompleteLabel" text="0.0.0.0-255.255.255.255" />
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                 <Label fx:id="ipAddressAssignableLabel" text="0.0.0.0-255.255.255.255" />
+             </HBox>
+         </children>
+
+      </GridPane>
+        <Separator prefWidth="200.0" />
+
     </children>
 
 </VBox>
