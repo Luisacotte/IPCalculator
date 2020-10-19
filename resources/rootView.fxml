@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="rootPane"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="co.uniquindio.edu.ipcalculator.controller.RootViewController"
+            prefHeight="700.0" prefWidth="600.0">
+    <center>
+        <fx:include fx:id="initPane" source="InitView.fxml"/>
+    </center>
+</BorderPane>
