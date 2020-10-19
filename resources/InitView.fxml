@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.ipcalculator.controller.InitViewController">
+   <children>
+      <TabPane prefHeight="700.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab closable="false" text="Red">
+            <content>
+              <fx:include fx:id="netPane" source="NetPane.fxml"/>
+            </content>
+          </Tab>
+          <Tab closable="false" text="Host">
+            <content>
+                <fx:include fx:id="hostPane" source="HostPane.fxml"/>
+            </content>
+          </Tab>
+            <Tab closable="false" text="Subredes">
+                <content>
+                    <fx:include fx:id="subnetPane" source="SubnetPane.fxml"/>
+                </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</VBox>

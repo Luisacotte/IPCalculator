@@ -234,7 +234,7 @@ class IPCalculator(IPAddressComplete:String) {
      * This method allows to get the bits number of the assignable IP addresses
      * @return an int with the assignable IP addresses
      */
-    fun getBitsNumberOfAssignableIPs():Int{
+    fun getNumberOfAssignableIPs():Int{
         var bitsForTheHost:Int = getBitsNumberForTheHost()
         var assignableIPs:Int = 0
         if(bitsForTheHost>1){
@@ -260,11 +260,11 @@ class IPCalculator(IPAddressComplete:String) {
         var dotList:ArrayList<Int> = ArrayList()
         dotList = Util.getDotsPositions(ipAddress, dotList, 0)
         var dotList2:ArrayList<Int> = ArrayList()
-        dotList2 = Util.getDotsPositions(broadcastAddress, dotList, 0)
-        var lowerLimit:Int = ipAddress.substring(dotList.get(dotList.size-1)+1, ipAddress.length).toInt() +1
-        var upperLimit:Int = broadcastAddress.substring(dotList2.get(dotList2.size-1)+1, broadcastAddress.length).toInt()-1
+        dotList2 = Util.getDotsPositions(broadcastAddress, dotList2, 0)
+        var lowerLimit:Int = ipAddress.substring(dotList[dotList.size-1]+1, ipAddress.length).toInt() +1
+        var upperLimit:Int = broadcastAddress.substring(dotList2[dotList2.size-1]+1, broadcastAddress.length).toInt()-1
         return ipAddress.substring(0, dotList.get(dotList.size-1))+"."+lowerLimit+
-                " - "+broadcastAddress.substring(0,dotList2.get(dotList2.size-4))+"."+upperLimit
+                " - "+broadcastAddress.substring(0,dotList2.get(dotList2.size-1))+"."+upperLimit
     }
 
 }
