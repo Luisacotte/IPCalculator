@@ -5,8 +5,10 @@ import kotlin.math.pow
 
 class IPCalculator(IPAddressComplete:String) {
 
+
     private lateinit var IPAddress:String
     private var subnetMask:Int = 16
+    private var bitsForSubnet:Int = 24
 
     init{
         setIPAddressAndSubnetMask(IPAddressComplete)

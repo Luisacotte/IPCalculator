@@ -258,7 +258,7 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
         } else {
             '0'
         }
-        print(binaryToAddressIP(broadcastBinary))
+        //print(binaryToAddressIP(broadcastBinary))
         return binaryToAddressIP(broadcastBinary)
     }
 

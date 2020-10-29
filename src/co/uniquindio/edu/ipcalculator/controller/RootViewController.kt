@@ -16,7 +16,7 @@ class RootViewController {
             alert.title = title
             alert.contentText = message
             alert.headerText = header
-
+            alert.isResizable = true
             alert.showAndWait()
         }
     }
