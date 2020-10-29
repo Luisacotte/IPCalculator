@@ -8,6 +8,12 @@ import javafx.scene.control.Alert
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 
+/**
+ * Host Pane Controller Class
+ *
+ * @author Cristian Giovanny Sánchez Pineda
+ * @author Luisa Fernanda Cotte Sánchez
+ */
 class HostPaneController {
     @FXML lateinit var netAddressLabel:Label
     @FXML lateinit var broadcastAddressLabel:Label
@@ -29,6 +35,10 @@ class HostPaneController {
             }
         }
     }
+
+    /**
+     * This method allows to get validations
+     */
     private fun isInputValid():Boolean{
         var valid = false
         var errorMessage = ""

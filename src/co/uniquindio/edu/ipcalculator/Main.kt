@@ -7,7 +7,12 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
-
+/**
+ * Main Class
+ *
+ * @author Cristian Giovanny Sánchez Pineda
+ * @author Luisa Fernanda Cotte Sánchez
+ */
 class Main: Application() {
 
     override fun start(primaryStage: Stage?) {

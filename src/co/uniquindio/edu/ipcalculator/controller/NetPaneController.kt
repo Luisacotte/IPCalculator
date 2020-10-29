@@ -8,6 +8,12 @@ import javafx.scene.control.Alert
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 
+/**
+ * Net Pane Controller Class
+ *
+ * @author Cristian Giovanny Sánchez Pineda
+ * @author Luisa Fernanda Cotte Sánchez
+ */
 class NetPaneController {
     @FXML lateinit var ipAddressCompleteField:TextField
     @FXML lateinit var subnetMaskLabel:Label
@@ -36,6 +42,10 @@ class NetPaneController {
             }
         }
     }
+
+    /**
+     * This method allows to validate
+     */
     private fun isInputValid():Boolean{
         var valid = false
         var errorMessage = ""

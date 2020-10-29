@@ -4,6 +4,12 @@ import javafx.fxml.FXML
 import javafx.scene.control.Alert
 import javafx.scene.layout.BorderPane
 
+/**
+ * Root View Controller Class
+ *
+ * @author Cristian Giovanny Sánchez Pineda
+ * @author Luisa Fernanda Cotte Sánchez
+ */
 class RootViewController {
 
     @FXML lateinit var rootPane: BorderPane
@@ -16,7 +22,7 @@ class RootViewController {
             alert.title = title
             alert.contentText = message
             alert.headerText = header
-
+            alert.isResizable = true
             alert.showAndWait()
         }
     }

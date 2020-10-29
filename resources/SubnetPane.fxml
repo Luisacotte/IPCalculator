@@ -1,11 +1,296 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-
-<?import javafx.scene.control.Label?>
-<VBox alignment="CENTER" spacing="5.0" prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.ipcalculator.controller.SubnetPaneController">
+<VBox alignment="CENTER" prefHeight="700.0" prefWidth="600.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.ipcalculator.controller.SubnetPaneController">
     <children>
-        <Label text="Prueba"/>
+        <HBox alignment="CENTER" prefHeight="103.0" prefWidth="600.0" spacing="10.0">
+            <children>
+                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <!-- <div>Iconos diseñados por <a href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.es/" title="Flaticon">www.flaticon.es</a></div> -->
+                        <Image url="@images/subnet.png" />
+                    </image>
+                </ImageView>
+            </children></HBox>
+        <Separator prefWidth="200.0" />
+      <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0">
+         <children>
+            <Label text="Dirección IP Completa" />
+            <TextField fx:id="ipAddressCompleteTxt" promptText="0.0.0.0/8" style="-fx-background-radius: 30px;" />
+         </children>
+      </HBox>
+        <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0">
+            <Label text="Cantidad de Bits de Subred" />
+            <TextField fx:id="bitQuantityFieldTxt" promptText="1 ... 32" style="-fx-background-radius: 30px;" />
+        </HBox>
+         <Button onAction="#analyzeAll" style="-fx-background-radius: 30px;" text="Analizar" />
+        <Separator prefWidth="200.0" />
+      <VBox alignment="CENTER">
+         <children>
+            <TabPane prefHeight="335.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Info. General">
+                  <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <GridPane prefHeight="292.0" prefWidth="600.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label text="Dirección de red principal" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                       <children>
+                                          <Label text="Dirección de broadcast principal" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                                       <children>
+                                          <Label text="Cantidad de Host" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                       <children>
+                                          <Label fx:id="principalNetAddressLabel" text="255.255.255.255" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <children>
+                                          <Label fx:id="principalBroadcastAddressLabel" text="255.255.255.255" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <children>
+                                          <Label fx:id="principalNumberHostLabel" text="0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                       <children>
+                                          <Label text="Cantidad de Subredes" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <children>
+                                          <Label fx:id="principalNumberNetLabel" text="0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                  </content>
+                </Tab>
+                <Tab text="Lista de Subredes">
+                  <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ListView fx:id="subnetList" prefHeight="316.0" prefWidth="600.0" />
+                           </children>
+                        </VBox>
+                  </content>
+                </Tab>
+                  <Tab text="Info. Subred Especifica">
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Subred" />
+                                    <TextField fx:id="subnetNumberTxt" promptText="1 ..." style="-fx-background-radius: 30px;" />
+                                    <Button onAction="#analyzeSubnet" style="-fx-background-radius: 30px;" text="Analizar" />
+                                 </children>
+                              </HBox>
+                              <GridPane prefHeight="174.0" prefWidth="600.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                                       <children>
+                                          <Label text="Rango de Direcciones Asignables" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <children>
+                                          <Label fx:id="assignableSubnetRangeLabel" text="0.0.0.0 - 255.255.255.255" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                       <children>
+                                          <Label text="Rango de Direcciones" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <children>
+                                          <Label fx:id="subnetRangeLabel" text="0.0.0.0 - 255.255.255.255" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label text="Direccion de Red de la Subred" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                       <children>
+                                          <Label fx:id="subnetAddressLabel" text="255.255.255.255" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                       <children>
+                                          <Label text="Direccion de Broadcast de la Subred" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <children>
+                                          <Label fx:id="subnetBroadcastAddressLabel" text="255.255.255.255" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </GridPane>
+                              <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Host" />
+                                    <TextField fx:id="hostNumberTxt" promptText="1 ..." style="-fx-background-radius: 30px;" />
+                                    <Button onAction="#analyzeAddressHost" style="-fx-background-radius: 30px;" text="Analizar" />
+                                 </children>
+                              </HBox>
+                              <GridPane prefHeight="42.0" prefWidth="600.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label text="Direccion del Host" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                       <children>
+                                          <Label fx:id="hostAddressLabel" text="255.255.255.255" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                     </content>
+                  </Tab>
+                  <Tab text="Listar Host">
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="46.0" prefWidth="600.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Cantidad de Direcciones IP" />
+                                    <TextField fx:id="addressQuantityTxt" promptText="1 ..." style="-fx-background-radius: 30px;" />
+                                 </children>
+                              </HBox>
+                              <Button onAction="#analyzeQuantityHost" style="-fx-background-radius: 30px;" text="Analizar" />
+                              <ListView fx:id="hostList" prefHeight="250.0" prefWidth="600.0" />
+                           </children>
+                        </VBox>
+                     </content>
+                  </Tab>
+                  <Tab text="Info. Bonus">
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Direccion IP del Host" />
+                                    <TextField fx:id="ipHostAddressTxt" promptText="0.0.0.0" style="-fx-background-radius: 30px;" />
+                                    <Button onAction="#analyzeIpHostAddress" style="-fx-background-radius: 30px;" text="Analizar" />
+                                 </children>
+                              </HBox>
+                              <GridPane prefHeight="59.0" prefWidth="591.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label text="Direccion de la Subred del Host" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="59.0" prefWidth="194.0" GridPane.columnIndex="1">
+                                       <children>
+                                          <Label fx:id="subnetAddressHostLabel" text="255.255.255.255" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </GridPane>
+                              <HBox alignment="CENTER" prefHeight="66.0" prefWidth="600.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Host 1" />
+                                    <TextField fx:id="ipHost1Txt" prefHeight="14.0" prefWidth="171.0" promptText="0.0.0.0" style="-fx-background-radius: 30px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="48.0" prefWidth="600.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Host 2" />
+                                    <TextField fx:id="ipHost2Txt" promptText="0.0.0.0" style="-fx-background-radius: 30px;" />
+                                 </children>
+                              </HBox>
+                              <Button onAction="#analyze2Host" style="-fx-background-radius: 30px;" text="Analizar" />
+                              <GridPane prefHeight="42.0" prefWidth="600.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label text="¿Pertenecen a la misma red?" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                       <children>
+                                          <Label fx:id="yesNotLabel" text="SI ... NO" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+        <Separator prefWidth="200.0" />
+
     </children>
 </VBox>
