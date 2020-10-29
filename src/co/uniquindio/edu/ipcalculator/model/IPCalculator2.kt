@@ -109,31 +109,34 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
     }
 
     /**
-     * This method allows to get the subnets quantity
+     * This method allows to get the subnets quantity IPC2
+     * @return the subnets quantity
      */
-    fun getQuantitySubnet(): Int {
+    fun getSubnetQuantity(): Int {
         return 2.toDouble().pow(bit).toInt()
     }
 
     /**
-     * This method allows to get the host quantity
+     * This method allows to get the host quantity IPC2
+     * @return the host quantity by subnet
      */
-    fun getQuantityHost(): Int {
+    fun getHostQuantity(): Int {
         var mask = subnetMask
         var bitHost = 32 - (mask + bit)
         return 2.toDouble().pow(bitHost).toInt()
     }
 
     /**
-     * This method allows to get the subnet and broadcast list
+     * This method allows to get the subnet and broadcast list IPC2
+     * @return the list with both elements
      */
-    fun getSubnetList(): ArrayList<String> {
+    fun getSubnetBroadcastList(): ArrayList<String> {
         var array = ArrayList<String>()
         array.add("Dirección de Subred\t\t-\t\tDirección de Broadcast")
         var address = convertToBinary(IPAddress)
         var a = address.substring(0,subnetMask)
 
-        for (i in 0 until getQuantitySubnet()){
+        for (i in 0 until getSubnetQuantity()){
             var bina = Integer.toBinaryString(i)
             var complete = completeZeros(bina,bit)
             complete = a + complete
@@ -141,22 +144,23 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
             while (complete.length < 32){
                 complete += "0"
             }
-            var netIP = binaryToAddressIP(complete)
-            var result = netIP + "\t\t-\t\t" + getBroadcastSubnet(netIP)
+            var netIP = binaryAddressToIpAddress(complete)
+            var result = netIP + "\t\t-\t\t" + getBroadcastBySubnet(netIP)
             array.add(result)
         }
         return array
     }
 
     /**
-     * This method allows to get only the subnet list
+     * This method allows to get only the subnet list IPC2
+     * @return the list with only subnets
      */
     fun getOnlySubnetList(): ArrayList<String> {
         var array = ArrayList<String>()
         var address = convertToBinary(IPAddress)
         var a = address.substring(0,subnetMask)
 
-        for (i in 0 until getQuantitySubnet()){
+        for (i in 0 until getSubnetQuantity()){
             var bina = Integer.toBinaryString(i)
             var complete = completeZeros(bina,bit)
             complete = a + complete
@@ -164,7 +168,7 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
             while (complete.length < 32){
                 complete += "0"
             }
-            var netIP = binaryToAddressIP(complete)
+            var netIP = binaryAddressToIpAddress(complete)
             var result = netIP
             array.add(result)
         }
@@ -172,7 +176,8 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
     }
 
     /**
-     * This method allows complete with zeros
+     * This method allows complete with zeros IPC2
+     * @return an address with some zeros
      */
     private fun completeZeros(binary:String, digit:Int):String{
         var newBinary = binary
@@ -183,7 +188,8 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
     }
 
     /**
-     * This method allows to convert the ip address to binary
+     * This method allows to convert the ip address to binary IPC2
+     * @return the binary ip address
      */
     private fun convertToBinary(address: String): String {
         var ipAddressBinary = ""
@@ -200,9 +206,10 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
     }
 
     /**
-     * This method allows to get the broadcast address subnet
+     * This method allows to get the broadcast address subnet IPC2
+     * @return the broadcast address by subnet address
      */
-    private fun getBroadcastSubnet(subnet:String): String {
+    private fun getBroadcastBySubnet(subnet:String): String {
         var broadcastBinary = ""
         val ipAddressBinary = convertToBinary(subnet)
         for (i in ipAddressBinary.indices) broadcastBinary += if (i < bit+subnetMask) {
@@ -210,17 +217,18 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
         } else {
             '1'
         }
-        return binaryToAddressIP(broadcastBinary)
+        return binaryAddressToIpAddress(broadcastBinary)
     }
 
     /**
-     * This method allows to convert the binary address ip to normal address ip
+     * This method allows to convert the binary ip address to normal ip address IPC2
+     * @return the ip address
      */
-    private fun binaryToAddressIP(bbinary: String): String {
+    private fun binaryAddressToIpAddress(bbinary: String): String {
         var maskDecimal = ""
         for (i in 0..3) {
             val binary = bbinary.substring((i * 8) + 0, (i * 8) + 8)
-            maskDecimal += binary.toInt(2) // SistemasNumericos.binToDec(bin.toInt(2)) ??
+            maskDecimal += binary.toInt(2)
             if (i < 3) {
                 maskDecimal += '.'
             }
@@ -229,10 +237,11 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
     }
 
     /**
-     * This method allows to get the assignable host list
+     * This method allows to get the assignable host list IPC2
+     * @return the list with assignable host by subnet
      */
-    fun assignableSubnetList(subnetNumber: Int): String {
-        var array = getSubnetList()[subnetNumber].split("\t\t-\t\t")
+    fun assignableHostList(subnetNumber: Int): String {
+        var array = getSubnetBroadcastList()[subnetNumber].split("\t\t-\t\t")
         var first = array[0].split(".")
         var second = array[1].split(".")
         var net = first[3].toInt()+1
@@ -243,22 +252,24 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
     }
 
     /**
-     * This method allows to get the host list
+     * This method allows to get the host list IPC2
+     * @return the list with host by subnet
      */
     fun hostList(subnet:String): List<String> {
         var array = ArrayList<String>()
         var bin = convertToBinary(subnet)
         var a =  bin.substring(0,subnetMask+bit)
-        for (i in 0 until getQuantityHost()){
+        for (i in 0 until getHostQuantity()){
             var converte = Integer.toBinaryString(i)
             var complete = completeZeros(converte,32-(bit+subnetMask))
-            array.add(binaryToAddressIP(a+complete))
+            array.add(binaryAddressToIpAddress(a+complete))
         }
         return array
     }
 
     /**
-     * This method allows to get one address host from one number subnet
+     * This method allows to get one address host from one number subnet IPC2
+     * @return the address host
      */
     fun subnetContainsHost(subnet:String,host:String):String{
         var net = getOnlySubnetList()[subnet.toInt()-1]
@@ -267,10 +278,10 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
     }
 
     /**
-     * This method allows to know if two host belong the same subnet
+     * This method allows to know if two host belong the same subnet IPC2
+     * @return "yes" if two host belong the same subnet or "no"
      */
-    fun containsHost(host1:String, host2:String):String{
-
+    fun containsTwoHost(host1:String, host2:String):String{
         if(getSubnet(host1) == getSubnet(host2)){
             return "SI"
         }
@@ -278,7 +289,8 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
     }
 
     /**
-     * This method allows to get the subnet from one address
+     * This method allows to get the subnet from one address IPC2
+     * @return the subnet by ip address
      */
     fun getSubnet(ip:String):String{
         var broadcastBinary = ""
@@ -288,8 +300,6 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
         } else {
             '0'
         }
-        //print(binaryToAddressIP(broadcastBinary))
-        return binaryToAddressIP(broadcastBinary)
+        return binaryAddressToIpAddress(broadcastBinary)
     }
-
 }

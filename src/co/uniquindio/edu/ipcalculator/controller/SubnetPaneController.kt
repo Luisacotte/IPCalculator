@@ -96,7 +96,7 @@ class SubnetPaneController {
             var aux = ipAddressCompleteTxt.text
             try {
                 ipCalculator = IPCalculator2(aux, auxBit)
-                var containsHost = ipCalculator.containsHost(ipHost1Txt.text, ipHost2Txt.text)
+                var containsHost = ipCalculator.containsTwoHost(ipHost1Txt.text, ipHost2Txt.text)
                 yesNotLabel.text = containsHost
             }catch (exception:MalformedIPAddress){
                 RootViewController.showAlert(exception.message.toString(), "ERROR", "", Alert.AlertType.ERROR)
@@ -106,7 +106,7 @@ class SubnetPaneController {
     }
 
     /**
-     * this method allows to get a specific address host from a specific number subnet
+     * this method allows to get a specific host address from a specific subnet number
      */
     @FXML
     fun analyzeAddressHost(event: ActionEvent) {
@@ -125,7 +125,7 @@ class SubnetPaneController {
 
     /**
      * This method allow to show all basic elements from first page
-     * those like address subnet, address broadcast subnet, host quantity...
+     * those like subnet address, broadcast address, host quantity...
      */
     @FXML
     fun analyzeAll(event: ActionEvent) {
@@ -138,13 +138,13 @@ class SubnetPaneController {
                 var broadcast = ipCalculator.getBroadcastAddress()
                 principalBroadcastAddressLabel.text = broadcast
 
-                var quantitySubnet = ipCalculator.getQuantitySubnet()
+                var quantitySubnet = ipCalculator.getSubnetQuantity()
                 principalNumberNetLabel.text = quantitySubnet.toString()
 
-                var quantityHost = ipCalculator.getQuantityHost()
+                var quantityHost = ipCalculator.getHostQuantity()
                 principalNumberHostLabel.text = quantityHost.toString()
 
-                var subnetsL = ipCalculator.getSubnetList()
+                var subnetsL = ipCalculator.getSubnetBroadcastList()
                 subnetList.items = FXCollections.observableList(subnetsL)
                 subnetList.refresh()
 
@@ -156,7 +156,7 @@ class SubnetPaneController {
     }
 
     /**
-     *
+     * Thos method allows to know the subnet address of a host
      */
     @FXML
     fun analyzeIpHostAddress(event: ActionEvent) {
@@ -173,6 +173,9 @@ class SubnetPaneController {
         }
     }
 
+    /**
+     * This method allows to get some host
+     */
     @FXML
     fun analyzeQuantityHost(event: ActionEvent) {
         if(isInputHostListValid()) {
@@ -190,6 +193,9 @@ class SubnetPaneController {
         }
     }
 
+    /**
+     * This method allows to know some information general of a subnet address
+     */
     @FXML
     fun analyzeSubnet(event: ActionEvent) {
         if(isInputSpecificSubnetValid()) {
@@ -198,8 +204,8 @@ class SubnetPaneController {
             try {
                 ipCalculator = IPCalculator2(aux, auxBit)
                 var subnetNumber = subnetNumberTxt.text.toInt()
-                var subnetInfo = ipCalculator.getSubnetList()[subnetNumber].split("\t\t-\t\t")
-                var assignable = ipCalculator.assignableSubnetList(subnetNumber)
+                var subnetInfo = ipCalculator.getSubnetBroadcastList()[subnetNumber].split("\t\t-\t\t")
+                var assignable = ipCalculator.assignableHostList(subnetNumber)
 
                 subnetAddressLabel.text = subnetInfo[0]
                 subnetBroadcastAddressLabel.text = subnetInfo[1]
@@ -213,30 +219,8 @@ class SubnetPaneController {
     }
 
     /**
-     * Intento fallido de validación
-     *
-    fun isInputValid(): Boolean {
-        var valid = false
-        var errorMessage = ""
-        var alertType: Alert.AlertType = Alert.AlertType.NONE
-
-        if (subnetNumberTxt.text.isNullOrEmpty()) {
-            errorMessage += "Debes llenar todos los campos."
-            alertType = Alert.AlertType.WARNING
-        } else {
-            if (subnetNumberTxt.text.length <= ipCalculator.getSubnetList().size && subnetNumberTxt.text.length >= 0) {
-            } else {
-                errorMessage += "Sobrepasa la cantidad de Subredes\n"
-                alertType = Alert.AlertType.WARNING
-            }
-        }
-        if (errorMessage.isEmpty()) {
-            valid = true
-        } else {
-            RootViewController.showAlert(errorMessage, "INFORMACIÓN", "", alertType)
-        }
-        return valid
-    }*/
+     * This method allows to get validations for the InfoBonus tab
+     */
     private fun isInputInfoBonusValid():Boolean{
         var valid = false
         var errorMessage = ""
@@ -278,6 +262,10 @@ class SubnetPaneController {
         }
         return valid
     }
+
+    /**
+     * This method allows to get validations for the InfoBonus tab
+     */
     private fun isInputInfoBonusValid2():Boolean{
         var valid = false
         var errorMessage = ""
@@ -348,6 +336,10 @@ class SubnetPaneController {
         }
         return valid
     }
+
+    /**
+     * This method allows to get validations for the HostList tab
+     */
     private fun isInputHostListValid():Boolean{
         var valid = false
         var errorMessage = ""
@@ -373,6 +365,9 @@ class SubnetPaneController {
         return valid
     }
 
+    /**
+     * This method allows to get validations for the SpecificSubnet tab
+     */
     private fun isInputSpecificSubnetValid():Boolean{
         var valid = false
         var errorMessage = ""
@@ -397,6 +392,10 @@ class SubnetPaneController {
         }
         return valid
     }
+
+    /**
+     * This method allows to get validations for the SpecificSubnet tab
+     */
     private fun isInputSpecificSubnetValid2():Boolean{
         var valid = false
         var errorMessage = ""
@@ -422,6 +421,9 @@ class SubnetPaneController {
         return valid
     }
 
+    /**
+     * This method allows to get validations
+     */
     private fun isInputValid():Boolean{
         var valid = false
         var errorMessage = ""
@@ -467,8 +469,6 @@ class SubnetPaneController {
                 errorMessage += "La cantidad de bits deben ser dígitos\n"
             }
         }
-
-
         if(errorMessage.isEmpty()){
             valid = true
         }else{
@@ -476,5 +476,4 @@ class SubnetPaneController {
         }
         return valid
     }
-
 }

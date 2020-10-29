@@ -3,8 +3,13 @@ import co.uniquindio.edu.ipcalculator.exceptions.MalformedIPAddress
 import co.uniquindio.edu.ipcalculator.util.Util
 import kotlin.math.pow
 
+/**
+ * This Class allows operations with subnets to work
+ *
+ * @author Cristian Giovanny Sánchez Pineda
+ * @author Luisa Fernanda Cotte Sánchez
+ */
 class IPCalculator(IPAddressComplete:String) {
-
 
     private lateinit var IPAddress:String
     private var subnetMask:Int = 16
