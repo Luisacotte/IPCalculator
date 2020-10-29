@@ -9,6 +9,12 @@ import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 
+/**
+ * Subnet Pane Controller Class
+ *
+ * @author Cristian Giovanny Sánchez Pineda
+ * @author Luisa Fernanda Cotte Sánchez
+ */
 class SubnetPaneController {
 
     private lateinit var ipCalculator: IPCalculator2
@@ -79,6 +85,9 @@ class SubnetPaneController {
     @FXML
     private lateinit var hostList: ListView<String>
 
+    /**
+     * This method allows to compare two host
+     */
     @FXML
     fun analyze2Host(event: ActionEvent) {
         var auxBit = bitQuantityFieldTxt.text.toInt()
@@ -89,6 +98,9 @@ class SubnetPaneController {
 
     }
 
+    /**
+     * this method allows to get a specific address host from a specific number subnet
+     */
     @FXML
     fun analyzeAddressHost(event: ActionEvent) {
         var auxBit = bitQuantityFieldTxt.text.toInt()
@@ -98,6 +110,10 @@ class SubnetPaneController {
         hostAddressLabel.text = getNumberHost
     }
 
+    /**
+     * This method allow to show all basic elements from first page
+     * those like address subnet, address broadcast subnet, host quantity...
+     */
     @FXML
     fun analyzeAll(event: ActionEvent) {
 
@@ -121,6 +137,9 @@ class SubnetPaneController {
         principalNetAddressLabel.text = ipCalculator.getOnlySubnetList()[0]
     }
 
+    /**
+     *
+     */
     @FXML
     fun analyzeIpHostAddress(event: ActionEvent) {
         var auxBit = bitQuantityFieldTxt.text.toInt()

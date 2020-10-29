@@ -4,6 +4,12 @@ import co.uniquindio.edu.ipcalculator.exceptions.MalformedIPAddress
 import co.uniquindio.edu.ipcalculator.util.Util
 import kotlin.math.pow
 
+/**
+ * This Class allows operations with subnets to work
+ *
+ * @author Cristian Giovanny Sánchez Pineda
+ * @author Luisa Fernanda Cotte Sánchez
+ */
 @Suppress("NAME_SHADOWING")
 class IPCalculator2(var IPAddress: String, var bit: Int) {
 
@@ -118,6 +124,9 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
         return 2.toDouble().pow(bitHost).toInt()
     }
 
+    /**
+     * This method allows to get the subnet and broadcast list
+     */
     fun getSubnetList(): ArrayList<String> {
         var array = ArrayList<String>()
         array.add("Dirección de Subred\t\t-\t\tDirección de Broadcast")
@@ -139,6 +148,9 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
         return array
     }
 
+    /**
+     * This method allows to get only the subnet list
+     */
     fun getOnlySubnetList(): ArrayList<String> {
         var array = ArrayList<String>()
         var address = convertToBinary(IPAddress)
@@ -159,6 +171,9 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
         return array
     }
 
+    /**
+     * This method allows complete with zeros
+     */
     private fun completeZeros(binary:String, digit:Int):String{
         var newBinary = binary
         while (newBinary.length < digit){
@@ -168,7 +183,7 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
     }
 
     /**
-     * This method allows to convert the op address to binary
+     * This method allows to convert the ip address to binary
      */
     private fun convertToBinary(address: String): String {
         var ipAddressBinary = ""
@@ -185,7 +200,7 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
     }
 
     /**
-     * This method allows to get the subnet's broadcast
+     * This method allows to get the broadcast address subnet
      */
     private fun getBroadcastSubnet(subnet:String): String {
         var broadcastBinary = ""
@@ -213,6 +228,9 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
         return maskDecimal
     }
 
+    /**
+     * This method allows to get the assignable host list
+     */
     fun assignableSubnetList(subnetNumber: Int): String {
         var array = getSubnetList()[subnetNumber].split("\t\t-\t\t")
         var first = array[0].split(".")
@@ -224,6 +242,9 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
         return assignable
     }
 
+    /**
+     * This method allows to get the host list
+     */
     fun hostList(subnet:String): List<String> {
         var array = ArrayList<String>()
         var bin = convertToBinary(subnet)
@@ -236,12 +257,18 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
         return array
     }
 
+    /**
+     * This method allows to get one address host from one number subnet
+     */
     fun subnetContainsHost(subnet:String,host:String):String{
         var net = getOnlySubnetList()[subnet.toInt()-1]
         var host1 = hostList(net)[host.toInt()]
         return host1
     }
 
+    /**
+     * This method allows to know if two host belong the same subnet
+     */
     fun containsHost(host1:String, host2:String):String{
 
         if(getSubnet(host1) == getSubnet(host2)){
@@ -250,6 +277,9 @@ class IPCalculator2(var IPAddress: String, var bit: Int) {
         return "NO"
     }
 
+    /**
+     * This method allows to get the subnet from one address
+     */
     fun getSubnet(ip:String):String{
         var broadcastBinary = ""
         val ipAddressBinary = convertToBinary(ip)
