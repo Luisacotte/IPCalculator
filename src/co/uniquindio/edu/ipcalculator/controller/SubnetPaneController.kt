@@ -1,7 +1,8 @@
 package co.uniquindio.edu.ipcalculator.controller
 
 import co.uniquindio.edu.ipcalculator.exceptions.MalformedIPAddress
-import co.uniquindio.edu.ipcalculator.model.IPCalculator2
+import co.uniquindio.edu.ipcalculator.model.IPCalculator
+
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
@@ -18,7 +19,7 @@ import javafx.scene.control.TextField
  */
 class SubnetPaneController {
 
-    private lateinit var ipCalculator: IPCalculator2
+    private lateinit var ipCalculator: IPCalculator
 
     @FXML
     private lateinit var ipAddressCompleteTxt: TextField
@@ -95,7 +96,8 @@ class SubnetPaneController {
             var auxBit = bitQuantityFieldTxt.text.toInt()
             var aux = ipAddressCompleteTxt.text
             try {
-                ipCalculator = IPCalculator2(aux, auxBit)
+                ipCalculator = IPCalculator(aux)
+                ipCalculator.setBits(auxBit)
                 var containsHost = ipCalculator.containsTwoHost(ipHost1Txt.text, ipHost2Txt.text)
                 yesNotLabel.text = containsHost
             }catch (exception:MalformedIPAddress){
@@ -114,7 +116,8 @@ class SubnetPaneController {
             var auxBit = bitQuantityFieldTxt.text.toInt()
             var aux = ipAddressCompleteTxt.text
             try {
-                ipCalculator = IPCalculator2(aux, auxBit)
+                ipCalculator = IPCalculator(aux)
+                ipCalculator.setBits(auxBit)
                 var getNumberHost = ipCalculator.subnetContainsHost(subnetNumberTxt.text, hostNumberTxt.text)
                 hostAddressLabel.text = getNumberHost
             } catch (exception: MalformedIPAddress) {
@@ -133,12 +136,12 @@ class SubnetPaneController {
             var auxBit = bitQuantityFieldTxt.text.toInt()
             var aux = ipAddressCompleteTxt.text
             try {
-                ipCalculator = IPCalculator2(aux, auxBit)
-
+                ipCalculator = IPCalculator(aux)
+                ipCalculator.setBits(auxBit)
                 var broadcast = ipCalculator.getBroadcastAddress()
                 principalBroadcastAddressLabel.text = broadcast
 
-                var quantitySubnet = ipCalculator.getSubnetQuantity()
+                var quantitySubnet = ipCalculator.getSubnetQuantity()-2
                 principalNumberNetLabel.text = quantitySubnet.toString()
 
                 var quantityHost = ipCalculator.getHostQuantity()
@@ -164,7 +167,8 @@ class SubnetPaneController {
             var auxBit = bitQuantityFieldTxt.text.toInt()
             var aux = ipAddressCompleteTxt.text
             try {
-                ipCalculator = IPCalculator2(aux, auxBit)
+                ipCalculator = IPCalculator(aux)
+                ipCalculator.setBits(auxBit)
                 var ipAddressHost = ipCalculator.getSubnet(ipHostAddressTxt.text)
                 subnetAddressHostLabel.text = ipAddressHost
             }catch (exception:MalformedIPAddress){
@@ -182,11 +186,13 @@ class SubnetPaneController {
             var auxBit = bitQuantityFieldTxt.text.toInt()
             var aux = ipAddressCompleteTxt.text
             try{
-            ipCalculator = IPCalculator2(aux, auxBit)
-            var quantity = addressQuantityTxt.text.toInt()
-            var hostL = ipCalculator.hostList(aux.split("/")[0])
-            hostList.items = FXCollections.observableList(hostL.slice(0 until quantity))
-            hostList.refresh()
+                ipCalculator = IPCalculator(aux)
+                ipCalculator.setBits(auxBit)
+                var quantity = addressQuantityTxt.text.toInt()
+                var sub = ipCalculator.getOnlySubnetList()[subnetNumberTxt.text.toInt()-1]
+                var hostL = ipCalculator.hostList(sub)
+                hostList.items = FXCollections.observableList(hostL.slice(0 until quantity))
+                hostList.refresh()
             }catch (exception:MalformedIPAddress){
                 RootViewController.showAlert(exception.message.toString(), "ERROR", "", Alert.AlertType.ERROR)
             }
@@ -202,7 +208,8 @@ class SubnetPaneController {
             var auxBit = bitQuantityFieldTxt.text.toInt()
             var aux = ipAddressCompleteTxt.text
             try {
-                ipCalculator = IPCalculator2(aux, auxBit)
+                ipCalculator = IPCalculator(aux)
+                ipCalculator.setBits(auxBit)
                 var subnetNumber = subnetNumberTxt.text.toInt()
                 var subnetInfo = ipCalculator.getSubnetBroadcastList()[subnetNumber].split("\t\t-\t\t")
                 var assignable = ipCalculator.assignableHostList(subnetNumber)

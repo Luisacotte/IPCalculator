@@ -1,4 +1,4 @@
-package co.uniquindio.edu.ipcalculator.model
+package co.uniquindio.edu.ipcalculator.test
 
 import co.uniquindio.edu.ipcalculator.exceptions.MalformedIPAddress
 import co.uniquindio.edu.ipcalculator.util.Util

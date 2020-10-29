@@ -13,7 +13,7 @@ class IPCalculator(IPAddressComplete:String) {
 
     private lateinit var IPAddress:String
     private var subnetMask:Int = 16
-    private var bitsForSubnet:Int = 24
+    private var bit: Int = 12
 
     init{
         setIPAddressAndSubnetMask(IPAddressComplete)
@@ -138,6 +138,9 @@ class IPCalculator(IPAddressComplete:String) {
     }
     fun getSubnetMask():Int{
         return subnetMask
+    }
+    fun setBits(bit:Int){
+       this.bit = bit
     }
 
     /**
@@ -272,6 +275,189 @@ class IPCalculator(IPAddressComplete:String) {
         var upperLimit:Int = broadcastAddress.substring(dotList2[dotList2.size-1]+1, broadcastAddress.length).toInt()-1
         return ipAddress.substring(0, dotList.get(dotList.size-1))+"."+lowerLimit+
                 " - "+broadcastAddress.substring(0,dotList2.get(dotList2.size-1))+"."+upperLimit
+    }
+
+    /**
+     * This method allows to get the subnets quantity IPC2
+     * @return the subnets quantity
+     */
+    fun getSubnetQuantity(): Int {
+        return 2.toDouble().pow(bit).toInt()
+    }
+    /**
+     * This method allows to get the host quantity IPC2
+     * @return the host quantity by subnet
+     */
+    fun getHostQuantity(): Int {
+        var mask = subnetMask
+        var bitHost = 32 - (mask + bit)
+        return 2.toDouble().pow(bitHost).toInt()
+    }
+    /**
+     * This method allows to get the subnet and broadcast list IPC2
+     * @return the list with both elements
+     */
+    fun getSubnetBroadcastList(): ArrayList<String> {
+        var array = ArrayList<String>()
+        array.add("Dirección de Subred\t\t-\t\tDirección de Broadcast")
+        var address = convertToBinary(IPAddress)
+        var a = address.substring(0,subnetMask)
+
+        for (i in 0 until getSubnetQuantity()){
+            var bina = Integer.toBinaryString(i)
+            var complete = completeZeros(bina,bit)
+            complete = a + complete
+
+            while (complete.length < 32){
+                complete += "0"
+            }
+            var netIP = binaryAddressToIpAddress(complete)
+            var result = netIP + "\t\t-\t\t" + getBroadcastBySubnet(netIP)
+            array.add(result)
+        }
+        return array
+    }
+    /**
+     * This method allows to get only the subnet list IPC2
+     * @return the list with only subnets
+     */
+    fun getOnlySubnetList(): ArrayList<String> {
+        var array = ArrayList<String>()
+        var address = convertToBinary(IPAddress)
+        var a = address.substring(0,subnetMask)
+
+        for (i in 0 until getSubnetQuantity()){
+            var bina = Integer.toBinaryString(i)
+            var complete = completeZeros(bina,bit)
+            complete = a + complete
+
+            while (complete.length < 32){
+                complete += "0"
+            }
+            var netIP = binaryAddressToIpAddress(complete)
+            var result = netIP
+            array.add(result)
+        }
+        return array
+    }
+    /**
+     * This method allows complete with zeros IPC2
+     * @return an address with some zeros
+     */
+    private fun completeZeros(binary:String, digit:Int):String{
+        var newBinary = binary
+        while (newBinary.length < digit){
+            newBinary = "0$newBinary"
+        }
+        return newBinary
+    }
+    /**
+     * This method allows to convert the ip address to binary IPC2
+     * @return the binary ip address
+     */
+    private fun convertToBinary(address: String): String {
+        var ipAddressBinary = ""
+        val partition = address.split(".")
+        for (i in partition) {
+            val aux = i.toInt()
+            var bin = Integer.toBinaryString(aux)
+            while (bin.length < 8) {
+                bin = "0$bin"
+            }
+            ipAddressBinary += bin
+        }
+        return ipAddressBinary
+    }
+    /**
+     * This method allows to get the broadcast address subnet IPC2
+     * @return the broadcast address by subnet address
+     */
+    private fun getBroadcastBySubnet(subnet:String): String {
+        var broadcastBinary = ""
+        val ipAddressBinary = convertToBinary(subnet)
+        for (i in ipAddressBinary.indices) broadcastBinary += if (i < bit+subnetMask) {
+            ipAddressBinary[i]
+        } else {
+            '1'
+        }
+        return binaryAddressToIpAddress(broadcastBinary)
+    }
+    /**
+     * This method allows to convert the binary ip address to normal ip address IPC2
+     * @return the ip address
+     */
+    private fun binaryAddressToIpAddress(bbinary: String): String {
+        var maskDecimal = ""
+        for (i in 0..3) {
+            val binary = bbinary.substring((i * 8) + 0, (i * 8) + 8)
+            maskDecimal += binary.toInt(2)
+            if (i < 3) {
+                maskDecimal += '.'
+            }
+        }
+        return maskDecimal
+    }
+    /**
+     * This method allows to get the assignable host list IPC2
+     * @return the list with assignable host by subnet
+     */
+    fun assignableHostList(subnetNumber: Int): String {
+        var array = getSubnetBroadcastList()[subnetNumber].split("\t\t-\t\t")
+        var first = array[0].split(".")
+        var second = array[1].split(".")
+        var net = first[3].toInt()+1
+        var broad = second[3].toInt()-1
+        var assignable = first[0] + "." + first[1] + "." + first[2] + "." + net.toString() + " - " +
+                second[0] + "." + second[1] + "." + second[2] + "." + broad.toString()
+        return assignable
+    }
+    /**
+     * This method allows to get the host list IPC2
+     * @return the list with host by subnet
+     */
+    fun hostList(subnet:String): List<String> {
+        var array = ArrayList<String>()
+        var bin = convertToBinary(subnet)
+        var a =  bin.substring(0,subnetMask+bit)
+        for (i in 0 until getHostQuantity()){
+            var converte = Integer.toBinaryString(i)
+            var complete = completeZeros(converte,32-(bit+subnetMask))
+            array.add(binaryAddressToIpAddress(a+complete))
+        }
+        return array
+    }
+    /**
+     * This method allows to get one address host from one number subnet IPC2
+     * @return the address host
+     */
+    fun subnetContainsHost(subnet:String,host:String):String{
+        var net = getOnlySubnetList()[subnet.toInt()-1]
+        var host1 = hostList(net)[host.toInt()-1]
+        return host1
+    }
+    /**
+     * This method allows to know if two host belong the same subnet IPC2
+     * @return "yes" if two host belong the same subnet or "no"
+     */
+    fun containsTwoHost(host1:String, host2:String):String{
+        if(getSubnet(host1) == getSubnet(host2)){
+            return "SI"
+        }
+        return "NO"
+    }
+    /**
+     * This method allows to get the subnet from one address IPC2
+     * @return the subnet by ip address
+     */
+    fun getSubnet(ip:String):String{
+        var broadcastBinary = ""
+        val ipAddressBinary = convertToBinary(ip)
+        for (i in ipAddressBinary.indices) broadcastBinary += if (i < bit+subnetMask) {
+            ipAddressBinary[i]
+        } else {
+            '0'
+        }
+        return binaryAddressToIpAddress(broadcastBinary)
     }
 
 }
